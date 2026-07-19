@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>旅匣 TravelBox｜旅寶 AI 智能報價專區</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="logo.png">
+<style>
+:root{
+  --ink:#1A2440;
+  --bg:#F5F7FB;
+  --card:#FFFFFF;
+  --blue:#2D62F0;
+  --orange:#EE4D2D;
+  --green:#12A46F;
+  --amber:#E58A1F;
+  --violet:#6B4FD8;
+  --line:#DAE1EE;
+  --mut:#5B6B8C;
+  --radius:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+header{position:sticky;top:0;z-index:50;background:rgba(245,247,251,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none}
+.logo-img{width:44px;height:44px;border-radius:12px;object-fit:cover;background:#fff;border:1px solid var(--line)}
+.logo strong{font-weight:900;font-size:1.3rem;letter-spacing:.08em}
+.logo .en{font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--blue);font-size:.82rem;letter-spacing:.18em}
+.hero-wrap{display:flex;align-items:center;gap:24px;justify-content:space-between}
+.hero-mascot{width:min(230px,26vw);height:auto;border-radius:20px;flex-shrink:0}
+@media (max-width:700px){.hero-mascot{display:none}}
+.nav-r{display:flex;gap:8px;align-items:center}
+.shopee-link{background:var(--orange);color:#fff;border-radius:999px;padding:8px 16px;font-size:.85rem;font-weight:700;text-decoration:none;transition:opacity .15s}
+.shopee-link:hover{opacity:.85}
+.cart-btn{position:relative;border:1.5px solid var(--ink);background:var(--card);border-radius:999px;padding:8px 18px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink);transition:all .15s ease}
+.cart-btn:hover{background:var(--ink);color:#fff}
+.cart-btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.badge{position:absolute;top:-8px;right:-8px;min-width:22px;height:22px;background:var(--blue);color:#fff;border-radius:999px;font-size:.72rem;display:flex;align-items:center;justify-content:center;padding:0 6px;font-weight:700}
+
+.hero{max-width:1100px;margin:0 auto;padding:48px 20px 24px;position:relative}
+.hero .eyebrow{font-size:.75rem;letter-spacing:.35em;color:var(--blue);font-weight:700;margin-bottom:14px}
+.hero h1{font-weight:900;font-size:clamp(1.8rem,5.5vw,3rem);line-height:1.35;letter-spacing:.03em;max-width:17em}
+.hero h1 em{font-style:normal;color:var(--blue)}
+.hero p{margin-top:14px;max-width:37em;line-height:1.9;color:var(--mut);font-size:.95rem}
+.promise{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+.promise span{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.8rem;font-weight:500}
+.promise b.g{color:var(--green)} .promise b.a{color:var(--amber)} .promise b.o{color:var(--orange)} .promise b.v{color:var(--violet)}
+
+.notice{max-width:1100px;margin:22px auto 0;padding:0 20px}
+.notice-in{background:#FFF6ED;border:1.5px solid #F3D9B8;border-radius:12px;padding:14px 18px;font-size:.85rem;line-height:1.9;color:#7A5A2E}
+.notice-in b{color:var(--amber)}
+.notice-in a{color:var(--orange);font-weight:700}
+
+.filters{max-width:1100px;margin:22px auto 0;padding:0 20px;display:flex;flex-direction:column;gap:12px}
+.frow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.flabel{font-size:.75rem;color:var(--mut);letter-spacing:.2em;font-weight:700;margin-right:4px}
+.tab{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 18px;font-size:.88rem;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s ease}
+.tab:hover{border-color:var(--ink)}
+.tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tab.active.type-sim{background:var(--green);border-color:var(--green)}
+.tab.active.type-esim{background:var(--amber);border-color:var(--amber)}
+.tab.active.type-acc{background:var(--violet);border-color:var(--violet)}
+.tab:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+.grid{max-width:1100px;margin:20px auto 70px;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .18s ease,box-shadow .18s ease;position:relative}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(26,36,64,.10)}
+.card::before{content:"";position:absolute;top:0;right:0;border-style:solid;border-width:0 26px 26px 0;border-color:transparent var(--bg) transparent transparent}
+.thumb{padding:18px 18px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.flag{font-size:2.3rem;line-height:1}
+.type-tag{font-size:.68rem;font-weight:700;letter-spacing:.08em;border-radius:6px;padding:4px 9px;color:#fff;margin-right:20px}
+.type-tag.sim{background:var(--green)} .type-tag.esim{background:var(--amber)} .type-tag.acc{background:var(--violet)}
+.body{padding:12px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
+.body h3{font-weight:700;font-size:1.03rem;line-height:1.5}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips span{font-size:.7rem;background:var(--bg);border-radius:6px;padding:3px 8px;color:var(--mut)}
+.specs{display:flex;gap:6px;flex-wrap:wrap}
+.spec{flex:1;min-width:72px;border:1.5px solid var(--line);background:var(--card);border-radius:8px;padding:6px 4px;font-size:.78rem;cursor:pointer;font-family:inherit;color:var(--ink);transition:all .12s ease;white-space:nowrap}
+.spec.on{border-color:var(--blue);background:#EAF0FE;font-weight:700}
+.spec:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.buy{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.price{font-family:'Space Grotesk','Noto Sans TC',sans-serif;font-weight:700;font-size:1.3rem}
+.price i{font-style:normal;font-size:.8rem;margin-right:2px}
+.price small{font-size:.7rem;font-weight:400;color:var(--mut);margin-left:3px;font-family:'Noto Sans TC',sans-serif}
+.ask{font-size:.85rem;color:var(--mut)}
+.add{background:var(--blue);color:#fff;border:none;border-radius:999px;padding:9px 18px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .12s ease;text-decoration:none;display:inline-block}
+.add:hover{background:#1D4CCB}
+.add:active{transform:scale(.95)}
+.add:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.add.agent{background:var(--amber)}
+.add.agent:hover{background:#C9770F}
+.none{grid-column:1/-1;text-align:center;color:var(--mut);padding:50px 0;font-size:.92rem;line-height:2}
+.none a{color:var(--orange);font-weight:700}
+
+.info{background:var(--ink);color:#D5E0F2;padding:46px 20px}
+.info-in{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:26px}
+.info h4{font-size:1rem;margin-bottom:8px;color:#fff}
+.info p{font-size:.85rem;line-height:1.9;color:#9FB2D6}
+.info b{color:#7FD4AE}
+.info b.a{color:#F2B96B}
+.info a{color:#FF8B6B;font-weight:700}
+footer{background:var(--ink);color:#5E729C;text-align:center;font-size:.75rem;padding:0 20px 26px;letter-spacing:.08em}
+
+.overlay{position:fixed;inset:0;background:rgba(26,36,64,.45);z-index:90;opacity:0;pointer-events:none;transition:opacity .2s ease}
+.overlay.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(400px,92vw);z-index:100;background:var(--card);box-shadow:-12px 0 40px rgba(26,36,64,.2);transform:translateX(105%);transition:transform .25s ease;display:flex;flex-direction:column}
+.drawer.open{transform:translateX(0)}
+.d-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line)}
+.d-head h2{font-size:1.1rem;letter-spacing:.1em;font-weight:900}
+.close{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--ink);line-height:1}
+.close:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.d-list{flex:1;overflow-y:auto;padding:14px 20px;display:flex;flex-direction:column;gap:14px}
+.empty{color:var(--mut);font-size:.9rem;text-align:center;margin-top:48px;line-height:2}
+.item{display:flex;gap:12px;align-items:center;border-bottom:1px dashed var(--line);padding-bottom:14px}
+.item .fl{font-size:1.7rem;flex-shrink:0}
+.item h5{font-size:.88rem;font-weight:700;line-height:1.4}
+.item .sub{font-size:.74rem;color:var(--mut);margin-top:2px}
+.item .grow{flex:1}
+.qty{display:flex;align-items:center;gap:8px;margin-top:6px}
+.qty button{width:24px;height:24px;border-radius:6px;border:1.5px solid var(--line);background:var(--card);cursor:pointer;font-family:inherit;color:var(--ink);font-weight:700}
+.qty button:hover{border-color:var(--ink)}
+.item .p{font-weight:700;font-size:.9rem;white-space:nowrap;font-family:'Space Grotesk','Noto Sans TC',sans-serif}
+.d-foot{border-top:1px solid var(--line);padding:16px 20px 22px}
+.ship-note{font-size:.75rem;color:var(--mut);margin-bottom:10px;line-height:1.8}
+.ship-note b{color:var(--blue)}
+.total{display:flex;justify-content:space-between;font-weight:900;margin:8px 0 12px}
+.total .n{font-family:'Space Grotesk','Noto Sans TC',sans-serif;font-size:1.35rem}
+.checkout{width:100%;background:var(--orange);color:#fff;border:none;border-radius:999px;padding:13px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;display:block}
+.checkout:hover{opacity:.88}
+.checkout:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.copy-btn{width:100%;background:var(--card);color:var(--ink);border:1.5px solid var(--line);border-radius:999px;padding:11px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
+.copy-btn:hover{border-color:var(--ink)}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,80px);background:var(--ink);color:#fff;padding:10px 22px;border-radius:999px;font-size:.85rem;z-index:120;transition:transform .25s ease;pointer-events:none;max-width:88vw;text-align:center}
+.toast.show{transform:translate(-50%,0)}
+
+@media (max-width:560px){
+  .hero{padding-top:34px}
+  .nav-r .shopee-link{display:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="logo" href="#"><img class="logo-img" src="logo.png" alt="旅寶"><strong>旅匣</strong><span class="en">VIA-BOX</span></a>
+    <div class="nav-r">
+      <a class="shopee-link" id="shopeeTop" href="#" target="_blank" rel="noopener">🛒 蝦皮賣場</a>
+      <button class="cart-btn" id="cartBtn" aria-label="開啟購物車">購物車 <span class="badge" id="badge" hidden>0</span></button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-wrap">
+    <div>
+      <div class="eyebrow">旅寶 AI 智能報價專區</div>
+      <h1>不必慢慢找！<br>選好目的地，<em>旅寶</em>馬上給你最新報價。</h1>
+      <p>點下方國家按鈕，即時查看各國上網卡方案與價格，加入購物車後直接前往蝦皮下單。中港澳 eSIM 已開放線上報價，其他地區 eSIM 由旅寶真人為您專人申辦。</p>
+    </div>
+    <img class="hero-mascot" src="logo.png" alt="旅匣吉祥物旅寶">
+  </div>
+  <div class="promise">
+    <span><b class="g">實體 SIM 卡</b>｜24H 快速發貨・隔日到貨</span>
+    <span><b class="a">eSIM</b>｜中港澳線上報價・其他專人申辦</span>
+    <span><b class="v">旅行配件</b>｜台灣現貨</span>
+    <span><b class="o">店取滿 $199</b>／宅配滿 $490 免運</span>
+  </div>
+</section>
+
+<div class="notice">
+  <p class="notice-in">📌 <b>溫馨提醒</b>：<b>中港澳 eSIM</b> 已開放線上報價！其他地區 eSIM 請點商品上的「📱 專人申辦」由旅寶真人服務。找不到目的地？前往 <a id="shopeeNotice" href="#" target="_blank" rel="noopener">🛒 旅匣蝦皮賣場</a> 或洽客服找旅寶。</p>
+</div>
+
+<div class="filters">
+  <div class="frow" id="typeTabs" role="group" aria-label="商品類型">
+    <span class="flabel">類型</span>
+    <button class="tab active" data-t="all">全部</button>
+    <button class="tab type-sim" data-t="sim">實體 SIM 卡</button>
+    <button class="tab type-esim" data-t="esim">eSIM</button>
+    <button class="tab type-acc" data-t="acc">旅行配件</button>
+  </div>
+  <div class="frow" id="ctryTabs" role="group" aria-label="目的地國家">
+    <span class="flabel">目的地</span>
+    <button class="tab active" data-c="all">全部</button>
+    <button class="tab" data-c="jp">🇯🇵 日本</button>
+    <button class="tab" data-c="kr">🇰🇷 韓國</button>
+    <button class="tab" data-c="cn">🇨🇳 中國</button>
+    <button class="tab" data-c="hk">🇭🇰 中港澳</button>
+    <button class="tab" data-c="ph">🇵🇭 菲律賓</button>
+    <button class="tab" data-c="vn">🇻🇳 越南</button>
+    <button class="tab" data-c="us">🇺🇸 美加墨</button>
+    <button class="tab" data-c="eu">🇪🇺 歐洲</button>
+  </div>
+</div>
+
+<main class="grid" id="grid"></main>
+
+<section class="info">
+  <div class="info-in">
+    <div>
+      <h4>出貨與免運</h4>
+      <p><b>24H 快速發貨、隔日到貨</b>。超商店取滿 <b>$199 免運</b>、宅配滿 <b>$490 免運</b>。實體卡插卡即用免設定，附中文說明。</p>
+    </div>
+    <div>
+      <h4>eSIM 申辦</h4>
+      <p>中港澳 eSIM 可直接線上報價下單；其他地區由旅寶真人協助確認手機<b class="a">支援 eSIM 且未鎖機</b>、挑選方案並教學安裝，點「📱 專人申辦」即可。</p>
+    </div>
+    <div>
+      <h4>找不到目的地？</h4>
+      <p>本頁為熱門精選。更多國家方案與旅行好物請至 <a id="shopeeInfo" href="#" target="_blank" rel="noopener">旅匣蝦皮賣場</a>，或洽客服找旅寶真人協助。</p>
+    </div>
+  </div>
+</section>
+<footer>© 2026 旅匣 TravelBox｜旅寶 AI 智能報價</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="購物車">
+  <div class="d-head"><h2>我的購物車</h2><button class="close" id="closeBtn" aria-label="關閉購物車">✕</button></div>
+  <div class="d-list" id="dList"></div>
+  <div class="d-foot">
+    <p class="ship-note" id="shipNote"></p>
+    <div class="total"><span>合計</span><span class="n" id="total">NT$0</span></div>
+    <a class="checkout" id="checkoutBtn" href="#" target="_blank" rel="noopener">🛒 前往蝦皮賣場下單</a>
+    <button class="copy-btn" id="copyBtn">複製清單內容（貼到蝦皮聊聊）</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast">已加入購物車</div>
+
+<script>
+/* ================================================================
+   ★ 店家設定：只要改這裡 ★
+================================================================ */
+const CONFIG = {
+  SHOPEE_URL: "https://shopee.tw/angeltsai530",
+  AGENT_URL: "https://line.me/R/ti/p/@627wttvq",
+};
+
+/* ---------- 商品資料（品名、方案、價格都在這改） ----------
+   type: "sim" 實體卡 / "esim" eSIM / "acc" 旅行配件
+   specs 只有一組時不顯示選項按鈕；from:true 會在價格後顯示「起」 */
+const PRODUCTS = [
+  /* ===== eSIM（線上報價） ===== */
+  {id:"hk-e1", ctry:"hk", type:"esim", flag:"🇭🇰", name:"中港澳 eSIM｜3 天方案",
+   tags:["24H自動發貨","一鍵安裝","3天效期"],
+   specs:{
+     g3:{label:"3GB流量", price:155},
+     g5:{label:"5GB流量", price:185},
+     d1:{label:"每日1GB", price:155},
+     d2:{label:"每日2GB", price:175},
+     d3:{label:"每日3GB", price:205},
+     un:{label:"無限吃到飽", price:285},
+     ti:{label:"鈦金可分享", price:575},
+   }},
+  /* ===== eSIM（專人申辦） ===== */
+  {id:"jp-e1", ctry:"jp", type:"esim", flag:"🇯🇵", name:"日本 eSIM", tags:["需手機支援","真人一對一服務"]},
+  {id:"kr-e1", ctry:"kr", type:"esim", flag:"🇰🇷", name:"韓國 eSIM", tags:["需手機支援","真人一對一服務"]},
+  {id:"eu-e1", ctry:"eu", type:"esim", flag:"🇪🇺", name:"歐洲通用 eSIM", tags:["需手機支援","真人一對一服務"]},
+
+  /* ===== 實體 SIM 卡 ===== */
+  {id:"jp-s1", ctry:"jp", type:"sim", flag:"🇯🇵", name:"日本 SIM 卡｜每日 1–5GB 高速用完降速",
+   tags:["吃到飽降速型","可分享","插卡即用"], from:true, specs:{std:{label:"單卡",price:140}}},
+  {id:"kr-s1", ctry:"kr", type:"sim", flag:"🇰🇷", name:"韓國網卡｜吃到飽不降速 單人獨享 5G 極速",
+   tags:["不限流量","不可分享"], from:true, specs:{std:{label:"單卡",price:226}}},
+  {id:"kr-s2", ctry:"kr", type:"sim", flag:"🇰🇷", name:"韓國上網卡｜吃到飽不降速 5G 不限流量",
+   tags:["不限流量","可分享"], from:true, specs:{std:{label:"單卡",price:490}}},
+  {id:"cn-s1", ctry:"cn", type:"sim", flag:"🇨🇳", name:"中國 SIM 卡｜免翻牆 5G 流量型",
+   tags:["LINE/IG 直連","可分享"], from:true, specs:{std:{label:"單卡",price:160}}},
+  {id:"cn-s2", ctry:"cn", type:"sim", flag:"🇨🇳", name:"中國 SIM 卡｜免翻牆 每日 1–3GB 降速吃到飽",
+   tags:["免翻牆","可分享"], from:true, specs:{std:{label:"單卡",price:160}}},
+  {id:"cn-s3", ctry:"cn", type:"sim", flag:"🇨🇳", name:"中國 SIM 卡｜免翻牆 5G 吃到飽不降速",
+   tags:["不限流量","免翻牆"], from:true, specs:{std:{label:"單卡",price:290}}},
+  {id:"hk-s1", ctry:"hk", type:"sim", flag:"🇭🇰", name:"中港澳 SIM 卡｜每日 1–3GB 高速降速吃到飽",
+   tags:["三地共用","可分享"], from:true, specs:{std:{label:"單卡",price:150}}},
+  {id:"ph-s1", ctry:"ph", type:"sim", flag:"🇵🇭", name:"菲律賓網卡｜每日 1GB/2GB 吃到飽",
+   tags:["降速型","可分享"], from:true, specs:{std:{label:"單卡",price:200}}},
+  {id:"ph-s2", ctry:"ph", type:"sim", flag:"🇵🇭", name:"菲律賓 SIM 卡｜吃到飽不降速",
+   tags:["不限流量","支援熱點分享"], from:true, specs:{std:{label:"單卡",price:590}}},
+  {id:"vn-s1", ctry:"vn", type:"sim", flag:"🇻🇳", name:"越南網卡｜每日高速 1GB/5GB 吃到飽",
+   tags:["降速型","可分享"], from:true, specs:{std:{label:"單卡",price:140}}},
+  {id:"us-s1", ctry:"us", type:"sim", flag:"🇺🇸", name:"美加墨網卡｜每日 1GB 降速型吃到飽",
+   tags:["三國通用","可分享"], from:true, specs:{std:{label:"單卡",price:490}}},
+  {id:"eu-s1", ctry:"eu", type:"sim", flag:"🇪🇺", name:"歐洲通用 SIM 卡｜吃到飽不降速 5G 高速",
+   tags:["不限流量","不可分享"], from:true, specs:{std:{label:"單卡",price:540}}},
+
+  /* ===== 旅行配件（台灣現貨） ===== */
+  {id:"ac1", ctry:"tw", type:"acc", flag:"🎒", name:"多功能行李背包 30L｜可登機雙肩包",
+   tags:["18吋登機尺寸","17吋筆電收納","防潑水"], specs:{std:{label:"1件",price:635}}},
+  {id:"ac2", ctry:"tw", type:"acc", flag:"👜", name:"可掛行李箱大容量旅行袋｜附拉桿套",
+   tags:["可套拉桿","防潑水面料"], specs:{std:{label:"1件",price:89}}},
+  {id:"ac3", ctry:"tw", type:"acc", flag:"🧳", name:"行李箱保護套 18–32 吋｜加厚高彈力",
+   tags:["多款可選","可水洗"], specs:{std:{label:"1件",price:110}}},
+  {id:"ac4", ctry:"tw", type:"acc", flag:"⚖️", name:"精準電子行李秤 50KG 高承重",
+   tags:["出國前先秤","避免超重費"], specs:{std:{label:"1件",price:89}}},
+  {id:"ac5", ctry:"tw", type:"acc", flag:"🛂", name:"多功能護照包｜大容量證件包",
+   tags:["護照/卡片/機票","拉鍊防掉"], specs:{std:{label:"1件",price:69}}},
+  {id:"ac6", ctry:"tw", type:"acc", flag:"👝", name:"旅行防盜腰包｜超薄貼身隱形護照包",
+   tags:["出國防盜","分層收納"], specs:{std:{label:"1件",price:39}}},
+  {id:"ac7", ctry:"tw", type:"acc", flag:"🌀", name:"手捲式壓縮袋｜衣物真空收納",
+   tags:["免抽氣","可重複使用"], specs:{std:{label:"1件",price:26}}},
+  {id:"ac8", ctry:"tw", type:"acc", flag:"➰", name:"可調式行李箱束帶｜行李固定帶",
+   tags:["防爆開","多色可選"], specs:{std:{label:"1件",price:69}}},
+  {id:"ac9", ctry:"tw", type:"acc", flag:"🏷️", name:"皮革行李吊牌｜11 色可選",
+   tags:["輕鬆辨識","質感升級"], specs:{std:{label:"1件",price:17}}},
+  {id:"ac10", ctry:"tw", type:"acc", flag:"🔗", name:"金屬行李掛帶｜行李綁帶掛環",
+   tags:["行李箱/推車可用","一扣就掛"], specs:{std:{label:"1件",price:35}}},
+  {id:"ac11", ctry:"tw", type:"acc", flag:"🧢", name:"質感皮革帽夾｜旅行防丟帽夾",
+   tags:["一夾掛包上","防帽子壓扁"], specs:{std:{label:"1件",price:18}}},
+  {id:"ac12", ctry:"tw", type:"acc", flag:"✂️", name:"貓咪摺疊指甲刀｜附鑰匙圈",
+   tags:["小巧便攜","3件NT$288"], specs:{std:{label:"1件",price:108}}},
+  {id:"ac13", ctry:"tw", type:"acc", flag:"🧴", name:"多功能掛式收納包｜旅行化妝包",
+   tags:["掛著用","防水洗漱包"], specs:{std:{label:"1件",price:99}}},
+];
+const NT = n => "NT$" + n.toLocaleString("zh-Hant-TW");
+
+/* ---------- 狀態 ---------- */
+let typeF = "all", ctryF = "all";
+const chosen = {};
+const cart = new Map();
+PRODUCTS.forEach(p => { if(p.specs) chosen[p.id] = Object.keys(p.specs)[0]; });
+
+/* ---------- 蝦皮連結套用 ---------- */
+["shopeeTop","shopeeNotice","shopeeInfo","checkoutBtn"].forEach(id=>{
+  document.getElementById(id).href = CONFIG.SHOPEE_URL;
+});
+
+/* ---------- 商品渲染 ---------- */
+const grid = document.getElementById("grid");
+const TYPE_TAG = {sim:"實體卡・24H發貨", acc:"配件・台灣現貨"};
+function renderGrid(){
+  const list = PRODUCTS.filter(p =>
+    (typeF==="all"||p.type===typeF) && (ctryF==="all"||p.ctry===ctryF));
+  if(!list.length){
+    grid.innerHTML = `<p class="none">這個組合目前沒有上架方案。<br>請至 <a href="${CONFIG.SHOPEE_URL}" target="_blank" rel="noopener">🛒 旅匣蝦皮賣場</a> 搜尋，或洽客服找旅寶。</p>`;
+    return;
+  }
+  grid.innerHTML = list.map(p => {
+    let specHtml = "", buyHtml = "";
+    const tagText = p.type==="esim"
+      ? (p.specs ? "eSIM・線上報價" : "eSIM・專人申辦")
+      : TYPE_TAG[p.type];
+    if(p.specs){
+      const keys = Object.keys(p.specs);
+      const sk = chosen[p.id], spec = p.specs[sk];
+      const multi = keys.length > 1;
+      if(multi){
+        specHtml = `<div class="specs" role="group" aria-label="${p.name} 方案">
+          ${keys.map(k=>`<button class="spec ${k===sk?"on":""}" data-id="${p.id}" data-spec="${k}">${p.specs[k].label}</button>`).join("")}
+        </div>`;
+      }
+      const small = multi ? `/${spec.label}` : (p.from ? "起" : "");
+      buyHtml = `<div class="buy">
+        <div class="price"><i>NT$</i>${spec.price.toLocaleString()}${small?`<small>${small}</small>`:""}</div>
+        <button class="add" data-add="${p.id}">加入購物車</button>
+      </div>`;
+    }else{
+      buyHtml = `<div class="buy">
+        <div class="ask">報價請洽旅寶</div>
+        <button class="add agent" data-agent="1">📱 專人申辦</button>
+      </div>`;
+    }
+    return `<article class="card">
+      <div class="thumb">
+        <span class="flag">${p.flag}</span>
+        <span class="type-tag ${p.type}">${tagText}</span>
+      </div>
+      <div class="body">
+        <h3>${p.name}</h3>
+        <div class="chips">${p.tags.map(t=>`<span>${t}</span>`).join("")}</div>
+        ${specHtml}${buyHtml}
+      </div>
+    </article>`;
+  }).join("");
+}
+
+/* ---------- 購物車 ---------- */
+const drawer=document.getElementById("drawer"), overlay=document.getElementById("overlay");
+const dList=document.getElementById("dList"), badge=document.getElementById("badge");
+const totalEl=document.getElementById("total"), shipNote=document.getElementById("shipNote");
+
+function renderCart(){
+  const items=[...cart.values()];
+  const count=items.reduce((s,i)=>s+i.qty,0);
+  badge.hidden=count===0; badge.textContent=count;
+
+  if(!items.length){
+    dList.innerHTML=`<p class="empty">購物車還是空的。<br>選一個目的地，旅寶馬上報價 ✈️</p>`;
+    totalEl.textContent=NT(0);
+    shipNote.textContent="店取滿 $199 免運、宅配滿 $490 免運。加入商品後可直接前往蝦皮下單。";
+    return;
+  }
+  dList.innerHTML=items.map(i=>{
+    const s=i.product.specs[i.specKey];
+    return `<div class="item">
+      <div class="fl">${i.product.flag}</div>
+      <div class="grow">
+        <h5>${i.product.name}</h5>
+        <div class="sub">${s.label}・${NT(s.price)}</div>
+        <div class="qty">
+          <button data-q="-1" data-key="${i.key}" aria-label="減少數量">−</button>
+          <span>${i.qty}</span>
+          <button data-q="1" data-key="${i.key}" aria-label="增加數量">＋</button>
+        </div>
+      </div>
+      <div class="p">${NT(s.price*i.qty)}</div>
+    </div>`;
+  }).join("");
+
+  const sub=items.reduce((s,i)=>s+i.product.specs[i.specKey].price*i.qty,0);
+  totalEl.textContent=NT(sub);
+  const need=490-sub;
+  shipNote.innerHTML= sub>=490
+    ? `已達 <b>$490</b>，宅配免運 🎉（店取滿 $199 免運）`
+    : `再買 <b>${NT(need)}</b> 宅配免運；店取滿 $199 免運。實際金額以蝦皮賣場為準。`;
+}
+
+function addToCart(id){
+  const p=PRODUCTS.find(x=>x.id===id), sk=chosen[id], key=id+"|"+sk;
+  const cur=cart.get(key);
+  cur?cur.qty++:cart.set(key,{key,product:p,specKey:sk,qty:1});
+  renderCart(); toast(`${p.name}（${p.specs[sk].label}）已加入購物車`);
+}
+
+/* ---------- 事件 ---------- */
+document.getElementById("typeTabs").addEventListener("click",e=>{
+  const b=e.target.closest(".tab"); if(!b)return;
+  typeF=b.dataset.t;
+  document.querySelectorAll("#typeTabs .tab").forEach(t=>t.classList.toggle("active",t===b));
+  renderGrid();
+});
+document.getElementById("ctryTabs").addEventListener("click",e=>{
+  const b=e.target.closest(".tab"); if(!b)return;
+  ctryF=b.dataset.c;
+  document.querySelectorAll("#ctryTabs .tab").forEach(t=>t.classList.toggle("active",t===b));
+  renderGrid();
+});
+grid.addEventListener("click",e=>{
+  const s=e.target.closest(".spec");
+  if(s){chosen[s.dataset.id]=s.dataset.spec; renderGrid(); return;}
+  const ag=e.target.closest("[data-agent]");
+  if(ag){
+    if(CONFIG.AGENT_URL) window.open(CONFIG.AGENT_URL,"_blank");
+    else toast("請點選單「📱 eSIM 專人申辦」或洽客服找旅寶");
+    return;
+  }
+  const a=e.target.closest("[data-add]");
+  if(a) addToCart(a.dataset.add);
+});
+dList.addEventListener("click",e=>{
+  const b=e.target.closest("[data-q]"); if(!b)return;
+  const it=cart.get(b.dataset.key); if(!it)return;
+  it.qty+=+b.dataset.q;
+  if(it.qty<=0)cart.delete(b.dataset.key);
+  renderCart();
+});
+function openCart(o){drawer.classList.toggle("open",o);overlay.classList.toggle("open",o);}
+document.getElementById("cartBtn").onclick=()=>openCart(true);
+document.getElementById("closeBtn").onclick=()=>openCart(false);
+overlay.onclick=()=>openCart(false);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")openCart(false);});
+
+/* 複製清單 → 貼到蝦皮聊聊 */
+document.getElementById("copyBtn").onclick=()=>{
+  const items=[...cart.values()];
+  if(!items.length) return toast("購物車是空的");
+  const lines=items.map(i=>{
+    const s=i.product.specs[i.specKey];
+    return `${i.product.flag} ${i.product.name}（${s.label}）x${i.qty}＝${NT(s.price*i.qty)}`;
+  });
+  const sub=items.reduce((s,i)=>s+i.product.specs[i.specKey].price*i.qty,0);
+  const text=`【旅匣購物車】\n`+lines.join("\n")+`\n合計：${NT(sub)}\n（旅寶 AI 報價，實際以賣場為準）`;
+  navigator.clipboard.writeText(text)
+    .then(()=>toast("已複製！貼到蝦皮聊聊給旅寶吧"))
+    .catch(()=>toast("複製失敗，請手動截圖購物車"));
+};
+
+let tt;
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),2400);
+}
+
+renderGrid(); renderCart();
+</script>
+</body>
+</html>
