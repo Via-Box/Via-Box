@@ -82,7 +82,12 @@ header{position:sticky;top:0;z-index:50;background:rgba(245,247,251,.92);backdro
 .spec{flex:1;min-width:72px;border:1.5px solid var(--line);background:var(--card);border-radius:8px;padding:6px 4px;font-size:.78rem;cursor:pointer;font-family:inherit;color:var(--ink);transition:all .12s ease;white-space:nowrap}
 .spec.on{border-color:var(--blue);background:#EAF0FE;font-weight:700}
 .spec:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
-.buy{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.buy{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.btns{display:flex;gap:6px;margin-left:auto}
+.add.pay{background:var(--green)}
+.add.pay:hover{background:#0D8558}
+.paylink{font-size:.72rem;color:var(--green);font-weight:700;text-decoration:none;margin-left:8px}
+.paylink:hover{text-decoration:underline}
 .price{font-family:'Space Grotesk','Noto Sans TC',sans-serif;font-weight:700;font-size:1.3rem}
 .price i{font-style:normal;font-size:.8rem;margin-right:2px}
 .price small{font-size:.7rem;font-weight:400;color:var(--mut);margin-left:3px;font-family:'Noto Sans TC',sans-serif}
@@ -242,6 +247,19 @@ const CONFIG = {
   AGENT_URL: "https://line.me/R/ti/p/@627wttvq",
 };
 
+/* ---------- 綠界收款連結（申請好後貼這裡） ----------
+   格式："商品id|方案代碼": "綠界收款連結",
+   商品id 和方案代碼看下方 PRODUCTS 的 id 與 specs 名稱。
+   單一價格的商品方案代碼都是 std。
+   範例：
+   "hk-e1|g3":  "https://p.ecpay.com.tw/ABC123",   ← 中港澳eSIM 3GB
+   "hk-e1|un":  "https://p.ecpay.com.tw/DEF456",   ← 中港澳eSIM 無限吃到飽
+   "jp-s1|std": "https://p.ecpay.com.tw/GHI789",   ← 日本SIM卡
+   有貼連結的方案會自動出現「💳 綠界付款」按鈕。 */
+const PAY = {
+
+};
+
 /* ---------- 商品資料（品名、方案、價格都在這改） ----------
    type: "sim" 實體卡 / "esim" eSIM / "acc" 旅行配件
    specs 只有一組時不顯示選項按鈕；from:true 會在價格後顯示「起」 */
@@ -355,9 +373,13 @@ function renderGrid(){
         </div>`;
       }
       const small = multi ? `/${spec.label}` : (p.from ? "起" : "");
+      const payUrl = PAY[p.id + "|" + sk];
       buyHtml = `<div class="buy">
         <div class="price"><i>NT$</i>${spec.price.toLocaleString()}${small?`<small>${small}</small>`:""}</div>
-        <button class="add" data-add="${p.id}">加入購物車</button>
+        <div class="btns">
+          ${payUrl?`<a class="add pay" href="${payUrl}" target="_blank" rel="noopener">💳 付款</a>`:""}
+          <button class="add" data-add="${p.id}">加入購物車</button>
+        </div>
       </div>`;
     }else{
       buyHtml = `<div class="buy">
@@ -397,11 +419,12 @@ function renderCart(){
   }
   dList.innerHTML=items.map(i=>{
     const s=i.product.specs[i.specKey];
+    const pu=PAY[i.product.id+"|"+i.specKey];
     return `<div class="item">
       <div class="fl">${i.product.flag}</div>
       <div class="grow">
         <h5>${i.product.name}</h5>
-        <div class="sub">${s.label}・${NT(s.price)}</div>
+        <div class="sub">${s.label}・${NT(s.price)}${pu?`<a class="paylink" href="${pu}" target="_blank" rel="noopener">💳 綠界付款</a>`:""}</div>
         <div class="qty">
           <button data-q="-1" data-key="${i.key}" aria-label="減少數量">−</button>
           <span>${i.qty}</span>
